@@ -8,12 +8,12 @@ import akka.actor.{ ActorRef, ActorSystem }
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
-import com.akkaactors.actorcontrollers.UserRegistryActor
+import com.akkaactors.actorcontrollers.{ MechanicRegistryActor, UserRegistryActor }
 import com.akkaactors.db.util.{ Config, MigrationConfig }
-import com.akkaactors.routes.UserRoutes
+import com.akkaactors.routes.Routes
 
 //#main-class
-object QuickstartServer extends App with Config with MigrationConfig with UserRoutes {
+object QuickstartServer extends App with Config with MigrationConfig with Routes {
 
   // set up ActorSystem and other dependencies here
   //#main-class
@@ -24,11 +24,13 @@ object QuickstartServer extends App with Config with MigrationConfig with UserRo
   //#server-bootstrapping
 
   val userRegistryActor: ActorRef = system.actorOf(UserRegistryActor.props, "userRegistryActor")
-
+  val mechanicRegistryActor: ActorRef = system.actorOf(MechanicRegistryActor.props, "mechanicRegistryActor")
   //#main-class
   // from the UserRoutes trait
-  lazy val routes: Route = userRoutes
+  lazy val routes: Route = allRoutes
   //#main-class
+
+
 
   migrate()
 
