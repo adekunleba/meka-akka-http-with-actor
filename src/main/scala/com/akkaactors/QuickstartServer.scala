@@ -30,8 +30,6 @@ object QuickstartServer extends App with Config with MigrationConfig with Routes
   lazy val routes: Route = allRoutes
   //#main-class
 
-
-
   migrate()
 
   //#http-server
@@ -46,6 +44,7 @@ object QuickstartServer extends App with Config with MigrationConfig with Routes
       system.terminate()
   }
 
+  reloadSchema()
   Await.result(system.whenTerminated, Duration.Inf)
   //#http-server
   //#main-class

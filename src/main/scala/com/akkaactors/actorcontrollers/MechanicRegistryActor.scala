@@ -1,14 +1,14 @@
 package com.akkaactors.actorcontrollers
 
 import akka.actor.AbstractActor.Receive
-import akka.actor.{Actor, ActorLogging, Props}
+import akka.actor.{ Actor, ActorLogging, Props }
 import com.akkaactors.db.doa.MechanicDao
 import com.akkaactors.db.models.Mechanic
 import com.akkaactors.db.models.definition.MechanicId
 import com.akkaactors.jsonsupport.JsonSupport
 
 import scala.concurrent.Future
-import scala.util.{Failure, Success}
+import scala.util.{ Failure, Success }
 
 object MechanicRegistryActor extends Commons {
   final case class GetMechanic(id: MechanicId)
@@ -31,7 +31,7 @@ class MechanicRegistryActor extends JsonSupport with Actor with ActorLogging {
 
     case GetMechanic(id) =>
       val newSender = sender()
-      val mechanic :Future[Mechanic] = MechanicDao.findById(id)
+      val mechanic: Future[Mechanic] = MechanicDao.findById(id)
 
       mechanic.onComplete {
         case Success(mech) => newSender ! mech
