@@ -1,6 +1,6 @@
 package com.akkaactors.routes
 
-import akka.actor.{ActorRef, ActorSystem}
+import akka.actor.{ ActorRef, ActorSystem }
 import akka.event.Logging
 import akka.http.scaladsl.model.StatusCodes
 import com.akkaactors.jsonsupport.JsonSupport
@@ -26,7 +26,7 @@ trait MechanicRoutes extends JsonSupport {
 
   implicit lazy val timeout = Timeout(5.seconds)
 
-  /***
+/***
     * Define the mechanic route including create, get all mechanic, get one mechanic by ID,
     * Delete mechanic.
     * @return
@@ -46,14 +46,14 @@ trait MechanicRoutes extends JsonSupport {
         }
       }
     } ~
-    path(IntNumber) { id =>
-      get {
-        val maybeMechanic :Future[Mechanic] =
-          (mechanicRegistryActor ? GetMechanic(id)).mapTo[Mechanic]
-        rejectEmptyResponse {
-          complete(maybeMechanic)
+      path(IntNumber) { id =>
+        get {
+          val maybeMechanic: Future[Mechanic] =
+            (mechanicRegistryActor ? GetMechanic(id)).mapTo[Mechanic]
+          rejectEmptyResponse {
+            complete(maybeMechanic)
+          }
         }
       }
-    }
   }
 }

@@ -13,5 +13,4 @@ object MechanicDao extends BaseDao {
 
   def findAll: Future[Seq[Mechanic]] = mechanicTable.result
 
-
 }

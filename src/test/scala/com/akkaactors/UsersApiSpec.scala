@@ -1,34 +1,46 @@
-import akka.http.scaladsl.model.{HttpEntity, MediaTypes, StatusCodes}
-import akka.actor.ActorRef
+import akka.http.scaladsl.model.{ HttpEntity, MediaTypes, StatusCodes }
+import akka.actor.{ ActorRef, ActorSystem }
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.marshalling.Marshal
-import akka.http.scaladsl.testkit.ScalatestRouteTest
-import com.akkaactors.actorcontrollers.UserRegistryActor
-import com.akkaactors.routes.UserRoutes
+import akka.http.scaladsl.testkit.RouteTestTimeout
+import com.akkaactors.actorcontrollers.{ MechanicRegistryActor, UserRegistryActor }
+import com.akkaactors.db.models.User
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.{Matchers, WordSpec}
+import spray.json._
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+import com.akkaactors.BaseServiceSpec
 
+import scala.concurrent.duration._
 
-class UsersApiSpec extends WordSpec with Matchers with ScalatestRouteTest
- with ScalaFutures with UserRoutes {
+class UsersApiSpec extends BaseServiceSpec with ScalaFutures {
 
-  override def userRegistryActor: ActorRef = system.actorOf(UserRegistryActor.props, "userRegistry")
+  //You should define registryActor as val and not a method.
 
+  override val userRegistryActor: ActorRef = system.actorOf(UserRegistryActor.props, "userRegistry")
+  override val mechanicRegistryActor: ActorRef = system.actorOf(MechanicRegistryActor.props, "mechanicRegistry")
   lazy val routes = userRoutes
 
-  //Test1
+  "User routes" should {
+    "retrieve user by id" in {
+      Get("/users/enroll-user/1") ~> routes ~> check {
+        status should be(StatusCodes.OK)
+        //responseAs[JsObject] should be(testUsers.head.toJson)
+      }
+    }
+    //Test1
+    "Create User" in {
+      val newUsername = "SomeUsername"
+      val requestEntity = HttpEntity(
+        MediaTypes.`application/json`,
+        JsObject(
+          "username" -> JsString("John Bull"),
+          "password" -> JsString("bullybull"),
+          "location" -> JsString("Badagry"),
+          "gender" -> JsNumber(1)).toString())
 
-  "UserRoutes" should {
-    "return no users if no present (GET / users)" in {
-      val request = HttpRequest(uri = "/users")
-
-
-      request ~> routes ~> check {
-        status should === (StatusCodes.OK)
-
-        contentType should === (ContentTypes.`application/json`)
-
-        //entityAs[String] should ===
+      Post("/users/enroll-user", requestEntity) ~> routes ~> check {
+        //status should ===(StatusCodes.Created)
+        response.status should be(StatusCode.int2StatusCode(201))
       }
     }
   }
