@@ -1,7 +1,7 @@
 package com.akkaactors.jsonsupport
 
 import com.akkaactors.actorcontrollers.UserRegistryActor.ActionPerformed
-import com.akkaactors.db.models.{Mechanic, User, Users}
+import com.akkaactors.db.models.{ Mechanic, User, Users }
 
 //#json-support
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport

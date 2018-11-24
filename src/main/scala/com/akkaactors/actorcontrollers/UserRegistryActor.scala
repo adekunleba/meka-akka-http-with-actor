@@ -2,24 +2,21 @@ package com.akkaactors.actorcontrollers
 
 //#user-registry-actor
 
-import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
+import akka.actor.{ Actor, ActorLogging, ActorSystem, Props }
 import com.akkaactors.db.doa.UsersDao
 import com.akkaactors.db.models.definition.UserId
-import com.akkaactors.db.models.{User, Users}
+import com.akkaactors.db.models.{ User, Users }
 import com.akkaactors.jsonsupport.JsonSupport
 
 import scala.concurrent.ExecutionContext
-import scala.util.{Failure, Success}
+import scala.util.{ Failure, Success }
 import spray.json._
 
+//#user-case-classes
 
 //#user-case-classes
 
-
-//#user-case-classes
-
-object UserRegistryActor {
-  final case class ActionPerformed(description: String)
+object UserRegistryActor extends Commons {
   final case object GetUsers
   final case class CreateUser(user: User)
   final case class GetUser(name: UserId)
@@ -32,8 +29,6 @@ class UserRegistryActor extends JsonSupport with Actor with ActorLogging {
   import UserRegistryActor._
   import context.dispatcher
   //DB Implementation here
-
-  var users = Set.empty[User].toSeq
 
   def receive: Receive = {
     case GetUsers =>
@@ -62,11 +57,6 @@ class UserRegistryActor extends JsonSupport with Actor with ActorLogging {
         case Success(del) => delSender ! ActionPerformed(s"User $id deleted")
         case Failure(delUser) => println(s"Unable to Delete user $id")
       }
-    //    case GetUser(name) =>
-    //      sender() ! users.find(_.username == name)
-    //    case DeleteUser(name) =>
-    //      users.find(_.username == name) foreach { user => users -= user }
-    //      sender() ! ActionPerformed(s"User ${name} deleted.")
   }
 }
 //#user-registry-actor

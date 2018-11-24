@@ -1,6 +1,6 @@
 package com.akkaactors.db.doa
 
-import com.akkaactors.db.models.definition.UsersTable
+import com.akkaactors.db.models.definition.{ MechanicsTable, UsersTable }
 import com.akkaactors.db.util.DatabaseConfig
 import slick.dbio.NoStream
 import slick.lifted.TableQuery
@@ -12,7 +12,7 @@ import scala.concurrent.Future
 trait BaseDao extends DatabaseConfig {
 
   val usersTable = TableQuery[UsersTable]
-  //val postTable  = TableQuery[PostsTable]
+  val mechanicTable = TableQuery[MechanicsTable]
   //val commentsTable = TableQuery[CommentsTable]
 
   //Action must be a subtype of slick.dbio.Effect
