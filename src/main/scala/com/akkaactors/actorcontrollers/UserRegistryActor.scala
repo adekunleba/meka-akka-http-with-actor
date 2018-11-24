@@ -46,10 +46,11 @@ class UserRegistryActor extends JsonSupport with Actor with ActorLogging {
     case GetUser(id) =>
       val user = UsersDao.findById(id)
       val userSender = sender
-      user.onComplete {
-        case Success(usr) => userSender ! usr
-        case Failure(failureUsr) => println(s"$id user not found")
-      }
+      userSender ! user
+    //      user.onComplete {
+    //        case Success(usr) => userSender ! usr
+    //        case Failure(failureUsr) => println("User ID not found")
+    //      }
     case DeleteUser(id) =>
       val user = UsersDao.delete(id)
       val delSender = sender
