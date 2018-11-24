@@ -1,24 +1,21 @@
+package com.akkaactors
+
 import akka.http.scaladsl.model.{ HttpEntity, MediaTypes, StatusCodes }
-import akka.actor.{ ActorRef, ActorSystem }
+import akka.actor.ActorRef
 import akka.http.scaladsl.model._
-import akka.http.scaladsl.marshalling.Marshal
-import akka.http.scaladsl.testkit.RouteTestTimeout
-import com.akkaactors.actorcontrollers.{ MechanicRegistryActor, UserRegistryActor }
-import com.akkaactors.db.models.User
+import com.akkaactors.actorcontrollers.UserRegistryActor
 import org.scalatest.concurrent.ScalaFutures
 import spray.json._
-import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
-import com.akkaactors.BaseServiceSpec
+import akka.http.scaladsl.server.Route
+import com.akkaactors.routes.UserRoutes
+import com.typesafe.scalalogging.LazyLogging
 
-import scala.concurrent.duration._
-
-class UsersApiSpec extends BaseServiceSpec with ScalaFutures {
+class UsersApiSpec extends BaseServiceSpec with UserRoutes with ScalaFutures with LazyLogging {
 
   //You should define registryActor as val and not a method.
 
   override val userRegistryActor: ActorRef = system.actorOf(UserRegistryActor.props, "userRegistry")
-  override val mechanicRegistryActor: ActorRef = system.actorOf(MechanicRegistryActor.props, "mechanicRegistry")
-  lazy val routes = userRoutes
+  lazy val routes: Route = userRoutes
 
   "User routes" should {
     "retrieve user by id" in {
@@ -33,13 +30,18 @@ class UsersApiSpec extends BaseServiceSpec with ScalaFutures {
       val requestEntity = HttpEntity(
         MediaTypes.`application/json`,
         JsObject(
-          "username" -> JsString("John Bull"),
+          "surname" -> JsString("John"),
+          "firstname" -> JsString("Bull"),
+          "email" -> JsString("johnbull@gmail.com"),
+          "username" -> JsString("JohnBull"),
           "password" -> JsString("bullybull"),
           "location" -> JsString("Badagry"),
-          "gender" -> JsNumber(1)).toString())
+          "gender" -> JsString("male")).toString())
+      //          "gender" -> JsNumber(1)).toString())
 
       Post("/users/enroll-user", requestEntity) ~> routes ~> check {
-        //status should ===(StatusCodes.Created)
+        status should ===(StatusCodes.Created)
+
         response.status should be(StatusCode.int2StatusCode(201))
       }
     }

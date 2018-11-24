@@ -14,7 +14,7 @@ trait MigrationConfig extends Config {
    * to fix the issue.
    * @return
    */
-  //flyway.repair()
+  //  flyway.repair()
 
   def migrate() = flyway.migrate()
 
