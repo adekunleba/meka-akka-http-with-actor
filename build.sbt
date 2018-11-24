@@ -26,6 +26,10 @@ lazy val root = (project in file(".")).
       "com.typesafe.slick" %% "slick-hikaricp"                      % slickVersion,
       "mysql"              % "mysql-connector-java"                  % mySqlVersion,
 
+
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
+      "ch.qos.logback"             %  "logback-classic"             % "1.2.3",
+
       //Migration tool
       "org.flywaydb"       %  "flyway-core"                          % flywayVersion,
     )

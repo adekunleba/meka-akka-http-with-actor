@@ -1,0 +1,28 @@
+version: '2'
+services:
+# Application Service
+  app:
+    image: java:8 #Add Image
+    volumes:
+      - ./:/app/deployment
+    links:
+      - mariadb
+    working_dir: /app/deployment
+    ports:
+      - "8080:8080"
+    entrypoint:
+      - /bin/bash
+      - -c
+      - java -jar /app/deployment/---app-name--
+
+# Data base Service.
+  mariadb:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: m3kamar1adb
+      MYSQL_DATABASE: meka
+#      MYSQL_USER: mekamariadb
+#      MYSQL_PASSWORD: m3kamar1adb
+    ports:
+      - "3306:3306"
