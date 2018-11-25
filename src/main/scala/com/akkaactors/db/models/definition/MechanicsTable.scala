@@ -2,7 +2,7 @@ package com.akkaactors.db.models.definition
 import com.akkaactors.db.models.Mechanic
 import slick.jdbc.PostgresProfile.api._
 
-class MechanicsTable(tag: Tag) extends Table[Mechanic](tag, "mechanicTable") {
+class MechanicsTable(tag: Tag) extends Table[Mechanic](tag, "mechanic") {
   def id = column[UserId]("id", O.PrimaryKey, O.AutoInc)
   def firstname = column[String]("firstname")
   def surname = column[String]("surname")
@@ -13,7 +13,6 @@ class MechanicsTable(tag: Tag) extends Table[Mechanic](tag, "mechanicTable") {
   def gender = column[String]("gender_c")
 
   //Add id to *
-  def * = (id.?, username, firstname, surname, password,
-    location, gender, email) <>
+  def * = (id.?, firstname, surname, username, email, password, location, gender) <>
     ((Mechanic.apply _).tupled, Mechanic.unapply)
 }
