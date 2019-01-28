@@ -46,11 +46,8 @@ class UserRegistryActor extends JsonSupport with Actor with ActorLogging {
     case GetUser(id) =>
       val user = UsersDao.findById(id)
       val userSender = sender
-      userSender ! user
-    //      user.onComplete {
-    //        case Success(usr) => userSender ! usr
-    //        case Failure(failureUsr) => println("User ID not found")
-    //      }
+      userSender ! user //Send all future manipulations Error or not to route
+
     case DeleteUser(id) =>
       val user = UsersDao.delete(id)
       val delSender = sender
@@ -61,3 +58,5 @@ class UserRegistryActor extends JsonSupport with Actor with ActorLogging {
   }
 }
 //#user-registry-actor
+//TODO: Implement Location Manipulation Using Google Map - Get the  distance between two locations
+//Location supplied by the User in time, and location of nearby Mechanic.

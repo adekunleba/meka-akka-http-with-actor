@@ -17,33 +17,40 @@ class UsersApiSpec extends BaseServiceSpec with UserRoutes with ScalaFutures wit
   override val userRegistryActor: ActorRef = system.actorOf(UserRegistryActor.props, "userRegistry")
   lazy val routes: Route = userRoutes
 
+  val requestEntity = HttpEntity(
+    MediaTypes.`application/json`,
+    JsObject(
+      "surname" -> JsString("John"),
+      "firstname" -> JsString("Bull"),
+      "email" -> JsString("johnbull@gmail.com"),
+      "username" -> JsString("JohnBull"),
+      "password" -> JsString("bullybull"),
+      "location" -> JsString("Badagry"),
+      "gender" -> JsString("male"),
+      "phone-number" -> JsNumber("07066179760")
+    ).toString()
+  )
+
   "User routes" should {
-    "retrieve user by id" in {
-      Get("/users/enroll-user/1") ~> routes ~> check {
-        status should be(StatusCodes.OK)
-        //responseAs[JsObject] should be(testUsers.head.toJson)
-      }
-    }
+//    "retrieve user by id" in {
+//      Get("/users/enroll-user/1") ~> routes ~> check {
+//        status should be(StatusCodes.OK)
+//        //responseAs[JsObject] should be(testUsers.head.toJson)
+//      }
+//    }
     //Test1
     "Create User" in {
       val newUsername = "SomeUsername"
-      val requestEntity = HttpEntity(
-        MediaTypes.`application/json`,
-        JsObject(
-          "surname" -> JsString("John"),
-          "firstname" -> JsString("Bull"),
-          "email" -> JsString("johnbull@gmail.com"),
-          "username" -> JsString("JohnBull"),
-          "password" -> JsString("bullybull"),
-          "location" -> JsString("Badagry"),
-          "gender" -> JsString("male")).toString())
       //          "gender" -> JsNumber(1)).toString())
-
       Post("/users/enroll-user", requestEntity) ~> routes ~> check {
         status should ===(StatusCodes.Created)
 
         response.status should be(StatusCode.int2StatusCode(201))
       }
+    }
+
+    "Should ensure all fields present for registration " in {
+      val data = requestEntity.toJson
     }
   }
 }
