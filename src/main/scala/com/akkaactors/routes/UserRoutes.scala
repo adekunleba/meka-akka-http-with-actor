@@ -2,6 +2,7 @@ package com.akkaactors.routes
 
 import akka.actor.{ ActorRef, ActorSystem }
 import akka.event.Logging
+import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{ RequestContext, Route }
@@ -34,18 +35,7 @@ trait UserRoutes extends JsonSupport {
   def userRegistryActor: ActorRef
 
   // Required by the `ask` (?) method below
-  implicit lazy val timeout = Timeout(5.seconds) // usually we'd obtain the timeout from the system's configuration
-
-  //#all-routes
-  //#users-get-post
-  //#users-get-delete
-  //Define Routes
-  //  def callService[T](f: => Future[T])(cb: T => RequestContext => Unit) = {
-  //
-  //    onComplete(f) {
-  //      case Success(value: T) => cb(value)
-  //      case Failure(ex: ServiceException) => complete(ex)
-  //  }
+  implicit lazy val timeout = Timeout(10.seconds) // usually we'd obtain the timeout from the system's configuration
 
   def userRoutes: Route = pathPrefix("users") {
     pathPrefix("enroll-user") {
@@ -79,6 +69,3 @@ trait UserRoutes extends JsonSupport {
       }
   }
 }
-
-//What does Path(Segment) means, it means we look for the last part of the url that does not have an ending slash
-//Then the string is extracted.

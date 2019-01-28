@@ -25,7 +25,6 @@ trait MechanicRoutes extends JsonSupport {
   def mechanicRegistryActor: ActorRef
 
   implicit lazy val timeout = Timeout(5.seconds)
-
 /***
     * Define the mechanic route including create, get all mechanic, get one mechanic by ID,
     * Delete mechanic.
