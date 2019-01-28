@@ -58,3 +58,5 @@ class UserRegistryActor extends JsonSupport with Actor with ActorLogging {
   }
 }
 //#user-registry-actor
+//TODO: Implement Location Manipulation Using Google Map - Get the  distance between two locations
+//Location supplied by the User in time, and location of nearby Mechanic.

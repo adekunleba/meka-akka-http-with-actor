@@ -18,6 +18,7 @@ trait MigrationConfig extends Config {
 
   def migrate() = flyway.migrate()
 
+
   def reloadSchema() = {
     flyway.clean()
     flyway.migrate()

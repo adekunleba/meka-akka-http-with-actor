@@ -30,7 +30,14 @@ lazy val root = (project in file(".")).
       "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
       "ch.qos.logback"             %  "logback-classic"             % "1.2.3",
 
+      //Password Encryption
+      "com.github.t3hnar" %% "scala-bcrypt" % "3.1",
+
+
+      //Google Map Service
+      "com.google.maps" % "google-maps-services" % "0.2.7",
+
       //Migration tool
-      "org.flywaydb"       %  "flyway-core"                          % flywayVersion,
+      "org.flywaydb"       %  "flyway-core"  % flywayVersion,
     )
   )

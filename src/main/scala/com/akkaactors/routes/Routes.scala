@@ -6,7 +6,7 @@ import scala.concurrent.duration._
 
 trait Routes extends UserRoutes with MechanicRoutes {
 
-  override lazy val timeout = Timeout(5.seconds) //This is not optimal
+  override lazy val timeout = Timeout(10.seconds) //This is not optimal
 
   val allRoutes = pathPrefix("app") {
     userRoutes ~
