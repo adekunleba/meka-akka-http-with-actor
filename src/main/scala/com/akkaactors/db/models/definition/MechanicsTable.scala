@@ -7,11 +7,13 @@ class MechanicsTable(tag: Tag) extends Table[Mechanic](tag, "mechanicTable") {
   def firstname = column[String]("firstname")
   def surname = column[String]("surname")
   def username = column[String]("username")
+  def email = column[String]("email")
   def password = column[String]("password")
   def location = column[String]("location")
-  def gender = column[Int]("gender")
+  def gender = column[String]("gender_c")
 
   //Add id to *
-  def * = (id.?, username, firstname, surname, password, location, gender) <>
+  def * = (id.?, username, firstname, surname, password,
+    location, gender, email) <>
     ((Mechanic.apply _).tupled, Mechanic.unapply)
 }
