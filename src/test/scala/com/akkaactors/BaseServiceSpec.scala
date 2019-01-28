@@ -15,11 +15,11 @@ trait BaseServiceSpec extends WordSpec with Matchers with ScalatestRouteTest wit
   import driver.api._
 
   //protected val log: LoggingAdapter = NoLogging
-  val testUsers = Seq(
-    User(Some(1), "Tom", "Olowojos", "userTom", "usertom@gmail.com", "tomtom", "Lagos", "male"),
-    User(Some(2), "Jerry", "Palmer", "userJenny", "userJemmy@gmail.com", "jennyjenny", "Ogun", "Female"),
-    User(Some(3), "Frank", "Donga", "userFrank", "franky@gmail.com", "frankyfrank", "Jos", "Male"))
+//  val testUsers = Seq(
+//    User(Some(1), "Tom", "Olowojos", "userTom", "usertom@gmail.com", "tomtom", "Lagos", "male"),
+//    User(Some(2), "Jerry", "Palmer", "userJenny", "userJemmy@gmail.com", "jennyjenny", "Ogun", "Female"),
+//    User(Some(3), "Frank", "Donga", "userFrank", "franky@gmail.com", "frankyfrank", "Jos", "Male"))
 
   reloadSchema()
-  Await.result(usersTable ++= testUsers, 10.seconds)
+//  Await.result(usersTable ++= testUsers, 10.seconds)
 }
